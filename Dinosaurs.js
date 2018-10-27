@@ -130,4 +130,4 @@ const Dinosaur =
 
 };
 
-Dinosaur.gainExp(Prey);
+Dinosaur.attack(Prey);
