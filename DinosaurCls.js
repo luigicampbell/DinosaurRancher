@@ -7,13 +7,12 @@ class Dinosaur
         max,
         name,
         type,
-        isFast,
-        isDefeated,
-        abilities,
-        isHungry,
-        experiencePoint,
-        leveledUp,
-        level,
+        isFast = false,
+        isDefeated = false,
+        abilities = [`attack`],
+        isHungry = false,
+        experiencePoints = 0,
+        level = 1,
         life,
         strength,
         criticalValue,
@@ -21,7 +20,7 @@ class Dinosaur
         defense,
         intelligence,
         speed,
-        uniqueValue,
+        uniqueValue
     )
     {
         this.max = max;
@@ -31,8 +30,7 @@ class Dinosaur
         this.isDefeated = isDefeated;
         this.abilities = abilities;
         this.isHungry = isHungry;
-        this.experiencePoint = experiencePoint;
-        this.leveledUp = leveledUp;
+        this.experiencePoints = experiencePoints;
         this.level = level;
         // TODO: set up random values
         this.life = life;
@@ -56,7 +54,6 @@ class Dinosaur
         console.log(`isFast: ${this.isFast}`);
         console.log(`hungry: ${this.isHungry}`);
         console.log(`life: ${this.life}`);
-        console.log(`levelUp: ${this.leveledUp}`);
         console.log(`level: ${this.level}`);
         console.log(`experience points: ${this.experiencePoints}`);
         console.log(`strength: ${this.strength}\n`);
@@ -99,9 +96,9 @@ class Dinosaur
         }    
     }
 
-    useAbility(ability){
+    useAbility(ability)
+    {
         console.log(`${this.name} used ${ability}`);
-        
     }
 
     gainExp(target)
@@ -160,30 +157,56 @@ class Dinosaur
         }    
         this.checkStats();
     }
-    
+}
+
+class Velociraptor extends Dinosaur
+{
+    constructor
+    (
+        max,
+        name,
+        type,
+        isFast,
+        isDefeated,
+        abilities,
+        isHungry,
+        experiencePoints,
+        level,
+        life,
+        strength,
+        criticalValue,
+        evasion,
+        defense,
+        intelligence,
+        speed,
+        uniqueValue
+    )
+    {
+        super
+        (
+            max,
+            name,
+            type,
+            isFast,
+            isDefeated,
+            abilities,
+            isHungry,
+            experiencePoints,
+            level,
+            life,
+            strength,
+            criticalValue,
+            evasion,
+            defense,
+            intelligence,
+            speed,
+            uniqueValue
+        );
+        this.abilities = [`attack`,`hide`, `lunge`];
+    }
 
 }
 
-const test = new Dinosaur
-(
-    45,
-    'TEST NAME',
-    'TEST TYPE',
-    true,
-    false,
-    ['1','2','3'],
-    false,
-    0,
-    false,
-    1,
-    30,
-    6,
-    3,
-    2,
-    1,
-    2,
-    2,
-    100,
-);
-
+const test = new Dinosaur();
+console.log( test.checkStats() );
 
