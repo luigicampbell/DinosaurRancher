@@ -1,34 +1,49 @@
 "use strict";
-const Prey =
+// TODO: extend the class for 4 objects
+class Dinosaur
 {
-    max: 14060,
-    life: 120,
-    name:'Hadrosaur',
-    experiencePoints: 120050,
-    strength: 13,
-    uniqueValue: 2
-};
-
-const Dinosaur = 
-{
-    max: 60,
-    name: 'Pet Velociraptor',
-    type: 'Velociraptor',
-    isFast: true,
-    isDefeated: false,
-    abilities: ['lunge'],
-    hungry: false,
-    experiencePoints: 0,
-    leveledUp: false,
-    level: 1,
-    life: 30,    
-    strength: 15,
-    criticalValue: 10,
-    evasion: 10,
-    defense: 1,
-    intelligence: 10,
-    speed: 20,
-    uniqueValue: 7,
+    constructor
+    (
+        max,
+        name,
+        type,
+        isFast,
+        isDefeated,
+        abilities,
+        isHungry,
+        experiencePoint,
+        leveledUp,
+        level,
+        life,
+        strength,
+        criticalValue,
+        evasion,
+        defense,
+        intelligence,
+        speed,
+        uniqueValue,
+    )
+    {
+        this.max = max;
+        this.name = name;
+        this.type = type;
+        this.isFast = isFast;
+        this.isDefeated = isDefeated;
+        this.abilities = abilities;
+        this.isHungry = isHungry;
+        this.experiencePoint = experiencePoint;
+        this.leveledUp = leveledUp;
+        this.level = level;
+        // TODO: set up random values
+        this.life = life;
+        this.strength = strength;
+        this.criticalValue = criticalValue;
+        this.evasion = evasion;
+        this.defense = defense;
+        this.intelligence = intelligence;
+        this.speed = speed;
+        this.uniqueValue  = uniqueValue;
+    }
 
     checkStats()
     {
@@ -39,28 +54,30 @@ const Dinosaur =
         console.log(`type: ${this.type}`);
         console.log(`height: ${this.height}`);
         console.log(`isFast: ${this.isFast}`);
-        console.log(`hungry: ${this.hungry}`);
+        console.log(`hungry: ${this.isHungry}`);
         console.log(`life: ${this.life}`);
         console.log(`levelUp: ${this.leveledUp}`);
         console.log(`level: ${this.level}`);
         console.log(`experience points: ${this.experiencePoints}`);
         console.log(`strength: ${this.strength}\n`);
-    },
+    }
 
     prey(target)
     {
         if(target.life < this.life / 2);
         console.log(`${this.name} is preying on ${target.name}\n`);
         this.life < this.max ? this.life += 5 : this.isFast = false;
-        this.hungry = false;
+        this.isHungry = false;
         this.checkStats();
-    },
+    }
+
     sleep()
     {
         alert(`${this.name} is sleeping\n`);
         this.life < max ? this.life += 10 : this.isFast = false;
         this.checkStats();
-    },
+    }
+
     attack(target)
     {
         console.log(`${this.name} is attacking ${target.name} \n`);
@@ -80,21 +97,13 @@ const Dinosaur =
             hit === 1 ? target.life -= Math.floor( damage / 2 ) + 1 : console.log(`${this.name} missed...`);
             this.checkStats();
         }    
-    },
+    }
+
     useAbility(ability){
-        if(ability === `lunge`)
-        {
-            console.log(`${this.name} used ${ability}.`);            
-        }
-        if(ability === `eviscerate`)
-        {
-            console.log(`${this.name} used ${ability}.`);            
-        }
-        if(ability === `stealth slash`)
-        {
-            console.log(`${this.name} used ${ability}.`);            
-        }
-    },
+        console.log(`${this.name} used ${ability}`);
+        
+    }
+
     gainExp(target)
     {
         let levelCap =
@@ -115,11 +124,14 @@ const Dinosaur =
             14: 328050,
             15: 350050
         };
+
         let levels = Object.keys(levelCap);
         let maxExp = 0;
         let exp = Math.round( target.experiencePoints / this.level );
+
         this.checkStats();
         this.experiencePoints += exp;
+
        for(let i = 0; i < levels.length; i++)
        {
            if(this.level === parseInt(levels[i]))
@@ -133,7 +145,8 @@ const Dinosaur =
            }
        }       
        this.levelUp(target, this.level);
-    },
+    }
+
     levelUp(target, level)
     {   
         
@@ -141,14 +154,36 @@ const Dinosaur =
         for(let i = 0; i < level; i++)
         {
             // case statement for pushing abilities to the abilities array after certain levels
-            if(level === 5) this.abilities.push(`eviscerate`);
-            if(level === 10) this.abilities.push(`dismember`);
-            if(level === 15) this.abilities.push(`stealth slash`);
             this.max += Math.ceil( ( target.max  + ( target.experiencePoints / this.level ) ) / ( this.level * this.level ) );
             this.life += Math.ceil( ( target.max  + ( target.experiencePoints / this.level ) ) / ( this.level * this.level) );
             this.strength += target.strength + this.level + ( Math.ceil( Math.random () * target.uniqueValue ) + 1);
         }    
         this.checkStats();
     }
+    
 
-};
+}
+
+const test = new Dinosaur
+(
+    45,
+    'TEST NAME',
+    'TEST TYPE',
+    true,
+    false,
+    ['1','2','3'],
+    false,
+    0,
+    false,
+    1,
+    30,
+    6,
+    3,
+    2,
+    1,
+    2,
+    2,
+    100,
+);
+
+
