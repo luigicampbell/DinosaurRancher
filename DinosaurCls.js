@@ -43,20 +43,31 @@ class Dinosaur
         this.uniqueValue  = uniqueValue;
     }
 
+    rename(name)
+    {
+        this.name = name;
+    }
+
     checkStats()
     {
-        console.log(`STATS: \n`);
-        console.log(`speed: ${this.speed}`);
-        console.log(`max: ${this.max}`);
-        console.log(`name: ${this.name}`);
-        console.log(`type: ${this.type}`);
-        console.log(`height: ${this.height}`);
-        console.log(`isFast: ${this.isFast}`);
-        console.log(`hungry: ${this.isHungry}`);
-        console.log(`life: ${this.life}`);
-        console.log(`level: ${this.level}`);
-        console.log(`experience points: ${this.experiencePoints}`);
-        console.log(`strength: ${this.strength}\n`);
+        return ` 
+        name: ${this.name}\n
+        max: ${this.max}
+        type: ${this.type}
+        isFast: ${this.isFast}
+        isDefeated: ${this.isDefeated}
+        abilities: ${this.abilities}
+        isHungry: ${this.isHungry}
+        experiencePoints: ${this.experiencePoints}
+        level: ${this.level}
+        life: ${this.life}
+        strength: ${this.strength}
+        criticalValue: ${this.criticalValue}
+        evasion: ${this.evasion}
+        defense: ${this.defense}
+        intelligence: ${this.intelligence}
+        speed: ${this.speed}
+        uniqueValue: ${this.uniqueValue}\n`;
     }
 
     prey(target)
@@ -70,7 +81,7 @@ class Dinosaur
 
     sleep()
     {
-        alert(`${this.name} is sleeping\n`);
+        console.log(`${this.name} is sleeping\n`);
         this.life < max ? this.life += 10 : this.isFast = false;
         this.checkStats();
     }
@@ -82,10 +93,10 @@ class Dinosaur
         let damage = Math.floor( Math.random() * this.strength ) + 1;
 
         if(this.isFast)
-        {
+        {   
             target.life -= damage;
-            console.log(`${this.name} hit for ${damage} damage`);
             this.checkStats();
+            return `${this.name} hit for ${damage} damage`;
         }
         else
         {
@@ -164,11 +175,103 @@ class Velociraptor extends Dinosaur
     constructor
     (
         max,
-        name,
-        type,
-        isFast,
+        name = `Velociraptor`,
+        type = `Savanah`,
+        isFast = true,
         isDefeated,
-        abilities,
+        abilities = [`attack`,`hide`, `lunge`],
+        isHungry,
+        experiencePoints,
+        level,
+        life = Math.floor( Math.random() * 5 ) + 25,
+        strength = Math.floor( Math.random() * 5 ) + 10,
+        criticalValue = Math.floor( Math.random() * 15 ) + 1,
+        evasion = Math.floor( Math.random() * 9 ) + 20,
+        defense = Math.floor( Math.random() * 3 ) + 5,
+        intelligence = Math.floor( Math.random() * 8 ) + 15,
+        speed = Math.floor( Math.random() * 10 ) + 25,
+        uniqueValue = Math.floor( Math.random() * 9 ) + 1
+    )
+    {
+        super
+        (
+            max,
+            name,
+            type,
+            isFast,
+            isDefeated,
+            abilities, 
+            isHungry,
+            experiencePoints,
+            level,
+            life,
+            strength,
+            criticalValue,
+            evasion,
+            defense,
+            intelligence,
+            speed,
+            uniqueValue
+        );
+    }
+
+}
+class Hadrosaur extends Dinosaur
+{
+    constructor
+    (
+        max,
+        name = `Hadrosaur`,
+        type = `Wetlands`,
+        isFast = false,
+        isDefeated,
+        abilities = [`attack`,`tail spin`, `stomp`],
+        isHungry,
+        experiencePoints,
+        level,
+        life = Math.floor( Math.random() * 5 ) + 40,
+        strength = Math.floor( Math.random() * 5 ) + 20,
+        criticalValue = Math.floor( Math.random() * 7 ) + 1,
+        evasion = Math.floor( Math.random() * 7 ) + 5,
+        defense = Math.floor( Math.random() * 10 ) + 15,
+        intelligence = Math.floor( Math.random() * 5 ) + 10,
+        speed = Math.floor( Math.random() * 7 ) + 15,
+        uniqueValue = Math.floor( Math.random() * 9 ) + 1
+    )
+    {
+        super
+        (
+            max,
+            name,
+            type,
+            isFast,
+            isDefeated,
+            abilities,
+            isHungry,
+            experiencePoints,
+            level,
+            life,
+            strength,
+            criticalValue,
+            evasion,
+            defense,
+            intelligence,
+            speed,
+            uniqueValue
+        );
+    }
+
+}
+class Triceratops extends Dinosaur
+{
+    constructor
+    (
+        max,
+        name  = `Triceratops`,
+        type  = `Grassland`,
+        isFast = false,
+        isDefeated,
+        abilities = [`attack`,`charge`, `defend`],
         isHungry,
         experiencePoints,
         level,
@@ -202,11 +305,62 @@ class Velociraptor extends Dinosaur
             speed,
             uniqueValue
         );
-        this.abilities = [`attack`,`hide`, `lunge`];
+    }
+
+}
+class Quetzacoatl extends Dinosaur
+{
+    constructor
+    (
+        max,
+        name = `Quetzacoatl`,
+        type = `flying`,
+        isFast = true,
+        isDefeated,
+        abilities = [`attack`,`charge`, `defend`],
+        isHungry,
+        experiencePoints,
+        level,
+        life,
+        strength,
+        criticalValue,
+        evasion,
+        defense,
+        intelligence,
+        speed,
+        uniqueValue
+    )
+    {
+        super
+        (
+            max,
+            name,
+            type,
+            isFast,
+            isDefeated,
+            abilities,
+            isHungry,
+            experiencePoints,
+            level,
+            life,
+            strength,
+            criticalValue,
+            evasion,
+            defense,
+            intelligence,
+            speed,
+            uniqueValue
+        );
     }
 
 }
 
-const test = new Dinosaur();
-console.log( test.checkStats() );
+// const test = new Velociraptor();
+// console.log(test.checkStats());
 
+// const test2 = new Hadrosaur();
+// console.log(test2.checkStats());
+
+// test.attack(test2);
+
+const mall = new Dinosaur()
