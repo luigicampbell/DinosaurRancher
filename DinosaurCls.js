@@ -57,18 +57,34 @@ class Dinosaur
         }
         else if(decision === true && this.abilities.length >=4)
         {
-            console.log(`${this.name} must replace an existing ability to learn ${ability}. Would you like to replace an ability?`);
-            let forget = false // change to user input
+            console.log(`${this.name} must replace an existing ability to learn ${ability}. Would you like to replace an ability?\n`);
+            
+            let forget = true; // get user input
+            console.log(forget);
             if(forget)
             {
-                // display abilities
+                console.log(`Choose an ability to forget: \n`);
+                let moves = this.abilities.toString(), moveToForget, confirms;
+                console.log(moves);
                 // user picks ability
+                moveToForget = 2; // change to user input
                 // user confirms
-                // ability slot is overwritten in array
+                console.log(`$Are you sure ${this.name} should learn ${ability}?\n`);
+                confirms = true;
+                if(confirms === true)
+                {
+                    this.abilities[moveToForget] = ability;
+                    console.log(`Rad, ${this.name} learned ${ability}!\n`);
+                }
+                else
+                {
+                    console.log(`Ok, ${this.name} kept its old abilities.\n`);
+                }    
+                console.log( `${this.name} is capable of ${this.abilities.toString()}. \n`);
             }
             else
             {
-                console.log(`Ok, ${this.name} kept it's old abilities.`);
+                console.log(`Ok, ${this.name} kept it's old abilities.\n`);
             } 
         }
     }
@@ -416,10 +432,6 @@ class Quetzacoatl extends Dinosaur
 }
 
 const test = new Velociraptor();
-
-test.experiencePoints = 10000000;
-const test2 = new Velociraptor();
-test2.name = 'TEST2'
-console.log( test2.checkStats() );
-test2.prey(test);
-
+test.name = `TEST`;
+test.abilities.push('test1','test2','test3');
+test.addAbility('NEW ABILITY', true);
