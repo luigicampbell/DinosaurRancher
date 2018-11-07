@@ -9,7 +9,7 @@ class Dinosaur
         type,
         isFast = false,
         isDefeated = false,
-        abilities = [`attack`],
+        abilities = [`attack`], //change to map
         isHungry = false,
         experiencePoints = 0,
         level = 1,
@@ -48,6 +48,31 @@ class Dinosaur
         this.name = name;
     }
 
+    addAbility(ability, decision)
+    {
+        if(decision === true && this.abilities.length < 3)
+        {
+            this.abilities.push(ability);
+            console.log(`${this.name} learned ${ability}!`);
+        }
+        else if(decision === true && this.abilities.length >=4)
+        {
+            console.log(`${this.name} must replace an existing ability to learn ${ability}. Would you like to replace an ability?`);
+            let forget = false // change to user input
+            if(forget)
+            {
+                // display abilities
+                // user picks ability
+                // user confirms
+                // ability slot is overwritten in array
+            }
+            else
+            {
+                console.log(`Ok, ${this.name} kept it's old abilities.`);
+            } 
+        }
+    }
+
     checkStats()
     {
         return ` 
@@ -72,39 +97,69 @@ class Dinosaur
 
     prey(target)
     {
-        if(target.life < this.life / 2);
-        console.log(`${this.name} is preying on ${target.name}\n`);
-        this.life < this.max ? this.life += 5 : this.isFast = false;
-        this.isHungry = false;
+        if(target.life < this.life / 2)
+        {
+            console.log('target life: ' + target.life);
+            console.log('this life: ' + this.life);
+            console.log(`${this.name} is preying on ${target.name}\n`);
+            this.life < this.max ? this.life += 5 : this.isFast = false;
+            this.isHungry = false;
+            target.isDefeated = true;
+            this.gainExp(target);
+        }
+        else
+        {
+            console.log(`${target.name} is still too strong to prey on...`);
+        }
         this.checkStats();
     }
 
     sleep()
     {
         console.log(`${this.name} is sleeping\n`);
-        this.life < max ? this.life += 10 : this.isFast = false;
+        this.life < this.max ? this.life += 10 : this.isFast = false;
         this.checkStats();
     }
 
+    // set life to 0 after hitting lower limit
     attack(target)
-    {
-        console.log(`${this.name} is attacking ${target.name} \n`);
-        
-        let damage = Math.floor( Math.random() * this.strength ) + 1;
+    {   
+        if(target.isDefeated === false)
+        {    
+            console.log(`${this.name} is attacking ${target.name} \n`);
+            
+            let damage = Math.floor( Math.random() * this.strength ) + 1;
 
-        if(this.isFast)
-        {   
-            target.life -= damage;
-            this.checkStats();
-            return `${this.name} hit for ${damage} damage`;
+            if(this.isFast)
+            {   
+                target.life -= damage;
+                if(target.life >= 0)
+                {
+                    console.log( `${this.name} hit for ${damage} damage\n` );
+                    console.log(target.checkStats() );
+                }
+                if(target.life <= 0)
+                {
+                    target.isDefeated = true;
+                    target.life = 0;
+                    console.log( target.checkStats() );
+                    this.gainExp(target);
+                }    
+            }
+            else
+            {
+                console.log(`${this.name} is groggy...`);
+                let hit = Math.floor( Math.random() * 2 );
+                hit === 1 ? target.life -= Math.floor( damage / 2 ) + 1 : console.log(`${this.name} missed...`);
+                this.checkStats(); 
+                if(target.life <= 0)
+                {
+                    target.isDefeated = true;
+                    target.life = 0;
+                    this.gainExp(target);
+                }   
+            }
         }
-        else
-        {
-            console.log(`${this.name} is groggy...`);
-            let hit = Math.floor( Math.random() * 2 );
-            hit === 1 ? target.life -= Math.floor( damage / 2 ) + 1 : console.log(`${this.name} missed...`);
-            this.checkStats();
-        }    
     }
 
     useAbility(ability)
@@ -158,15 +213,19 @@ class Dinosaur
     levelUp(target, level)
     {   
         
-        console.log(`${this.name} leveled up!`);
+        console.log(`${this.name} leveled up!\n`);
         for(let i = 0; i < level; i++)
         {
             // case statement for pushing abilities to the abilities array after certain levels
             this.max += Math.ceil( ( target.max  + ( target.experiencePoints / this.level ) ) / ( this.level * this.level ) );
             this.life += Math.ceil( ( target.max  + ( target.experiencePoints / this.level ) ) / ( this.level * this.level) );
             this.strength += target.strength + this.level + ( Math.ceil( Math.random () * target.uniqueValue ) + 1);
-        }    
-        this.checkStats();
+            this.evasion += target.evasion + this.level + ( Math.ceil( Math.random () * target.uniqueValue ) + 1); 
+            this.defense += target.defense + this.level + ( Math.ceil( Math.random () * target.uniqueValue ) + 1); 
+            this.intelligence += target.intelligence + this.level + ( Math.ceil( Math.random () * target.uniqueValue ) + 1); 
+            this.speed += target.speed + this.level + ( Math.ceil( Math.random () * target.uniqueValue ) + 1);
+        }
+        console.log(this.checkStats() );
     }
 }
 
@@ -179,7 +238,7 @@ class Velociraptor extends Dinosaur
         type = `Savanah`,
         isFast = true,
         isDefeated,
-        abilities = [`attack`,`hide`, `lunge`],
+        abilities = [`attack`,`hide`],
         isHungry,
         experiencePoints,
         level,
@@ -213,6 +272,7 @@ class Velociraptor extends Dinosaur
             speed,
             uniqueValue
         );
+        this.max = this.life;
     }
 
 }
@@ -355,12 +415,11 @@ class Quetzacoatl extends Dinosaur
 
 }
 
-// const test = new Velociraptor();
-// console.log(test.checkStats());
+const test = new Velociraptor();
 
-// const test2 = new Hadrosaur();
-// console.log(test2.checkStats());
+test.experiencePoints = 10000000;
+const test2 = new Velociraptor();
+test2.name = 'TEST2'
+console.log( test2.checkStats() );
+test2.prey(test);
 
-// test.attack(test2);
-
-const mall = new Dinosaur()
