@@ -6,7 +6,7 @@
 // to DEFINE a CONSTRUCTOR FUNCTION SIGNATURE we need 3 THINGS:
 // the 'function' keyword, the name of the function and parameters
 
-function Person( name, hasPassport, isHappy ) // PARAMETERS ARE GENERAL
+function makePerson( paramName, paramHasPassport, paramIsHappy ) // PARAMETERS ARE GENERAL
 {
     // this is inside the BODY of the CONSTRUCTOR FUNCTION { ...BODY }
     // "this" is the Person object that we are going to make a copy out of
@@ -14,35 +14,35 @@ function Person( name, hasPassport, isHappy ) // PARAMETERS ARE GENERAL
     // with the " . " dot operator you access the ATTRIBUTES 
     // Next the " = " (ASSIGNMENT OPERATOR) is used to assign the PARAMETERS to the ATTRIBUTES
     // the SEMICOLON " ; " is telling ASSIGNMENT OPERATOR that there is no more PARAMETERS to ASSIGN
-    this.attributeName = name;
-    this.attributeHasPassport = hasPassport;
-    this.attributeIsHappy = isHappy;
+    this.attributeName = paramName;
+    this.attributeHasPassport = paramHasPassport;
+    this.attributeIsHappy = paramIsHappy;
     this.attributeMemories = [];
     this.attributeIsHungry = true;
     this.attributePurchases = [];
     // the person object should be able to SIGHT-SEE, EAT, SHOP
-    this.methodSightSee = function( place) 
+    this.methodSightSee = function( paramPlace) 
     {
         // the place has been visited
         // a person gains a happy memory
         // place isVisited = true
-        this.attributeMemories.push( place );
+        this.attributeMemories.push( paramPlace );
         this.attributeIsHappy = true;
-        return `${this.attributeName} is happy they visited ${place}!`;
+        return `${this.attributeName} is happy they visited ${paramPlace}!`;
     };
     
-    this.methodEat = function( food )
+    this.methodEat = function( paramFood )
     {
         this.attributeIsHungry = false;
-        return `${this.attributeName} ate some ${food} and isn't hungry anymore!`;
+        return `${this.attributeName} ate some ${paramFood} and isn't hungry anymore!`;
     };
 
-    this.methodShop = function( clothes )
+    this.methodShop = function( paramClothes )
     {
-        this.attributePurchases.push( clothes );
-        return `${this.attributeName} bought some ${clothes}.`;
+        this.attributePurchases.push( paramClothes );
+        return `${this.attributeName} bought some ${paramClothes}.`;
     };
 }
 
-const irma = new Person(`Irma`, true, false);
+const irma = new makePerson(`Irma`, true, false);
 console.log( irma.methodShop(`Kate Spade Undies`) );

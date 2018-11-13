@@ -6,7 +6,7 @@ class Dinosaur
     (
         max,
         name,
-        type,
+        environment,
         isFast = false,
         isDefeated = false,
         abilities = [`attack`], //change to map
@@ -25,14 +25,13 @@ class Dinosaur
     {
         this.max = max;
         this.name = name;
-        this.type = type;
+        this.environment = environment;
         this.isFast = isFast;
         this.isDefeated = isDefeated;
         this.abilities = abilities;
         this.isHungry = isHungry;
         this.experiencePoints = experiencePoints;
         this.level = level;
-        // TODO: set up random values
         this.life = life;
         this.strength = strength;
         this.criticalValue = criticalValue;
@@ -48,44 +47,49 @@ class Dinosaur
         this.name = name;
     }
 
-    addAbility(ability, decision)
+    addAbility(ability)
     {
-        if(decision === true && this.abilities.length < 3)
+        if(this.abilities.length < 4)
         {
             this.abilities.push(ability);
             console.log(`${this.name} learned ${ability}!`);
         }
-        else if(decision === true && this.abilities.length >=4)
+        else if(this.abilities.length >= 4)
         {
             console.log(`${this.name} must replace an existing ability to learn ${ability}. Would you like to replace an ability?\n`);
             
-            let forget = true; // get user input
-            console.log(forget);
-            if(forget)
+            let decision = true; // get user input
+            // console.log(decision);
+            if(!decision)
             {
-                console.log(`Choose an ability to forget: \n`);
-                let moves = this.abilities.toString(), moveToForget, confirms;
-                console.log(moves);
-                // user picks ability
-                moveToForget = 2; // change to user input
-                // user confirms
-                console.log(`$Are you sure ${this.name} should learn ${ability}?\n`);
-                confirms = true;
-                if(confirms === true)
-                {
-                    this.abilities[moveToForget] = ability;
-                    console.log(`Rad, ${this.name} learned ${ability}!\n`);
-                }
-                else
-                {
-                    console.log(`Ok, ${this.name} kept its old abilities.\n`);
-                }    
-                console.log( `${this.name} is capable of ${this.abilities.toString()}. \n`);
+                console.log(`Ok, ${this.name} kept it's old abilities.\n`);
             }
             else
             {
-                console.log(`Ok, ${this.name} kept it's old abilities.\n`);
-            } 
+                while(decision) // do this until user picks ability
+                {
+                    console.log(`Choose an ability to forget: \n`);
+                    let moves = this.abilities.toString(), moveToForget;
+                    console.log(moves);
+                    // user picks ability
+                    moveToForget = 2; // change to user input
+                    console.log(`Are you sure ${this.name} should replace ${this.abilities[moveToForget]} with ${ability}?\n`);
+                    let confirm = true; // get user input
+                    if(confirm)
+                    {   
+                        console.log(`Rad, ${this.name} forgot ${this.abilities[moveToForget]} and learned ${ability}!\n`);
+                        this.abilities[moveToForget] = ability;
+                        decision = false;
+                    }
+                    else
+                    {
+                        console.log(`Should ${this.name} keep it's old abilities? \n`);
+                        let nevermind = true; // get user input
+                        nevermind ? decision = false : decision = true;
+                    }
+                } 
+                console.log( `${this.name} is capable of ${this.abilities.toString()}. \n`);   
+            }
         }
     }
 
@@ -94,7 +98,7 @@ class Dinosaur
         return ` 
         name: ${this.name}\n
         max: ${this.max}
-        type: ${this.type}
+        environment: ${this.environment}
         isFast: ${this.isFast}
         isDefeated: ${this.isDefeated}
         abilities: ${this.abilities}
@@ -125,7 +129,7 @@ class Dinosaur
         }
         else
         {
-            console.log(`${target.name} is still too strong to prey on...`);
+            console.log(`${target.name} is still too strong to prey on...\n`);
         }
         this.checkStats();
     }
@@ -177,7 +181,8 @@ class Dinosaur
             }
         }
     }
-
+    
+    //implement on individual objects by overriding? or set ability definitions on each object
     useAbility(ability)
     {
         console.log(`${this.name} used ${ability}`);
@@ -185,6 +190,7 @@ class Dinosaur
 
     gainExp(target)
     {
+        // implement unique level caps for all objects
         let levelCap =
         {
             1: 25,
@@ -219,10 +225,12 @@ class Dinosaur
                 maxExp = parseInt(levelCap[currentLevel]);
                 if(this.experiencePoints >= maxExp)
                 {
-                    this.level++
+                    this.level++;
                 }  
            }
        }       
+    //    console.log(this.level);
+       
        this.levelUp(target, this.level);
     }
 
@@ -232,7 +240,18 @@ class Dinosaur
         console.log(`${this.name} leveled up!\n`);
         for(let i = 0; i < level; i++)
         {
-            // case statement for pushing abilities to the abilities array after certain levels
+            // let abilitiesKeys = Object.keys(this.abilityMap);
+            let abilityToPush = '';
+            
+            if(this.abilityMap[  i.toString()  ] != undefined)
+            {
+                console.log(this.abilityMap[ i.toString() ]);
+                abilityToPush = this.abilityMap[ i.toString() ];
+                this.addAbility(abilityToPush);
+                // console.log(abilityToPush);
+                
+            }
+
             this.max += Math.ceil( ( target.max  + ( target.experiencePoints / this.level ) ) / ( this.level * this.level ) );
             this.life += Math.ceil( ( target.max  + ( target.experiencePoints / this.level ) ) / ( this.level * this.level) );
             this.strength += target.strength + this.level + ( Math.ceil( Math.random () * target.uniqueValue ) + 1);
@@ -251,7 +270,7 @@ class Velociraptor extends Dinosaur
     (
         max,
         name = `Velociraptor`,
-        type = `Savanah`,
+        environment = `Savanah`,
         isFast = true,
         isDefeated,
         abilities = [`attack`,`hide`],
@@ -272,7 +291,7 @@ class Velociraptor extends Dinosaur
         (
             max,
             name,
-            type,
+            environment,
             isFast,
             isDefeated,
             abilities, 
@@ -289,6 +308,12 @@ class Velociraptor extends Dinosaur
             uniqueValue
         );
         this.max = this.life;
+        this.abilityMap = 
+        {
+            5: 'lunge',
+            9: 'eviscerate',
+            13: 'stealth attack'
+        };
     }
 
 }
@@ -298,10 +323,10 @@ class Hadrosaur extends Dinosaur
     (
         max,
         name = `Hadrosaur`,
-        type = `Wetlands`,
+        environment = `Wetlands`, //if in environment add boost
         isFast = false,
         isDefeated,
-        abilities = [`attack`,`tail spin`, `stomp`],
+        abilities = [`attack`,`tail spin`],
         isHungry,
         experiencePoints,
         level,
@@ -319,7 +344,7 @@ class Hadrosaur extends Dinosaur
         (
             max,
             name,
-            type,
+            environment,
             isFast,
             isDefeated,
             abilities,
@@ -335,37 +360,44 @@ class Hadrosaur extends Dinosaur
             speed,
             uniqueValue
         );
+        this.max = this.life;
+        this.abilityMap =
+        {
+            3: 'stomp',
+            8: 'stampede',
+            12: 'swim'
+        };
     }
-
 }
+
 class Triceratops extends Dinosaur
 {
     constructor
     (
         max,
         name  = `Triceratops`,
-        type  = `Grassland`,
+        environment  = `Grassland`,
         isFast = false,
         isDefeated,
-        abilities = [`attack`,`charge`, `defend`],
+        abilities = [`attack`,`charge`],
         isHungry,
         experiencePoints,
         level,
-        life,
-        strength,
-        criticalValue,
-        evasion,
-        defense,
-        intelligence,
-        speed,
-        uniqueValue
+        life = Math.floor( Math.random() * 3 ) + 50,
+        strength = Math.floor( Math.random() * 10 ) + 30,
+        criticalValue = Math.floor( Math.random() * 10 ) + 5,
+        evasion = Math.floor( Math.random() *  7) + 1,
+        defense = Math.floor( Math.random() * 5 ) + 30,
+        intelligence = Math.floor( Math.random() * 3 ) + 5,
+        speed = Math.floor( Math.random() * 7 ) + 10,
+        uniqueValue = Math.floor( Math.random() * 5 ) + 1
     )
     {
         super
         (
             max,
             name,
-            type,
+            environment,
             isFast,
             isDefeated,
             abilities,
@@ -381,19 +413,26 @@ class Triceratops extends Dinosaur
             speed,
             uniqueValue
         );
+        this.max = this.life;
+        this.abilityMap = 
+        {
+            4: 'charge',
+            9: 'crush',
+            15: 'impale'
+        };
     }
-
 }
+
 class Quetzacoatl extends Dinosaur
 {
     constructor
     (
         max,
         name = `Quetzacoatl`,
-        type = `flying`,
+        environment = `highlands`,
         isFast = true,
         isDefeated,
-        abilities = [`attack`,`charge`, `defend`],
+        abilities = [`attack`,`grab drop`],
         isHungry,
         experiencePoints,
         level,
@@ -411,7 +450,7 @@ class Quetzacoatl extends Dinosaur
         (
             max,
             name,
-            type,
+            environment,
             isFast,
             isDefeated,
             abilities,
@@ -427,11 +466,20 @@ class Quetzacoatl extends Dinosaur
             speed,
             uniqueValue
         );
+        this.max = this.life;
+        this.abilityMap = 
+        {
+            2: 'gore',
+            6: 'dive bomb',
+            11: 'kamikaze'
+        };
     }
-
 }
 
 const test = new Velociraptor();
+const test2 = new Hadrosaur();
 test.name = `TEST`;
-test.abilities.push('test1','test2','test3');
-test.addAbility('NEW ABILITY', true);
+test2.experiencePoints = 350050;
+test.attack(test2);
+test.attack(test2);
+test.attack(test2);
