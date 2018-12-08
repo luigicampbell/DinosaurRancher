@@ -148,10 +148,13 @@ class Dinosaur
         {    
             console.log(`${this.name} is attacking ${target.name} \n`);
             
+            let multiplier = Math.abs(Math.ceil(this.criticalValue - ( Math.floor( Math.random() * target.defense ) +1 ) ));
+            console.log('multiplier: ' + multiplier);
             let damage = Math.floor( Math.random() * this.strength ) + 1;
-
+            damage *= multiplier;
             if(this.isFast)
             {   
+                // if target level is higher than this object, decrease 100% by level difference
                 target.life -= damage;
                 if(target.life >= 0)
                 {
@@ -186,6 +189,7 @@ class Dinosaur
     useAbility(ability)
     {
         console.log(`${this.name} used ${ability}`);
+        // case statement for abilities
     }
 
     gainExp(target)
@@ -249,7 +253,6 @@ class Dinosaur
                 abilityToPush = this.abilityMap[ i.toString() ];
                 this.addAbility(abilityToPush);
                 // console.log(abilityToPush);
-                
             }
 
             this.max += Math.ceil( ( target.max  + ( target.experiencePoints / this.level ) ) / ( this.level * this.level ) );
@@ -314,6 +317,34 @@ class Velociraptor extends Dinosaur
             9: 'eviscerate',
             13: 'stealth attack'
         };
+        // write a method to determine if ability will land
+        // this.hide = function(evasion) 
+        // {
+        //     console.log('something');
+        // }
+
+        this.lunge = function(target)
+        {
+            // if ability will land
+            // target's defense and speed are lowered momentarily
+            // does minimal damage
+        }
+
+        this.eviscerate = function(target)
+        {
+            // critical damage based on stats
+        }
+
+        this.stealthAttack = function(target, evasion)
+        {
+            // evasion is raised for one turn
+            // critical damage on second turn
+        }
+    }
+    hide(evasion) //this also works but constructor takes precedence and overrides
+    {
+        console.log(`I'm hiding....`);
+        
     }
 
 }
@@ -368,6 +399,22 @@ class Hadrosaur extends Dinosaur
             12: 'swim'
         };
     }
+    stomp(target)
+    {
+        // strength based damage
+    }
+
+    stampede(target, defense)
+    {
+        // evasion of target is momentarily lowered
+        // damage times random number of this object (1-3)
+    }
+
+    swim(target, evasion)
+    {
+        // momentarily raises evasion
+        // target evasion is lowered
+    }
 }
 
 class Triceratops extends Dinosaur
@@ -421,6 +468,22 @@ class Triceratops extends Dinosaur
             15: 'impale'
         };
     }
+
+    charge(target)
+    {
+        // strength based damage to target
+    }
+    
+    crush(target)
+    {
+        // damage lowers defense of target momentarily
+    }
+
+    impale(target)
+    {
+        // critical damage ignores defense but not evasion
+    }
+    
 }
 
 class Quetzacoatl extends Dinosaur
@@ -432,7 +495,7 @@ class Quetzacoatl extends Dinosaur
         environment = `highlands`,
         isFast = true,
         isDefeated,
-        abilities = [`attack`,`grab drop`],
+        abilities = [`attack`,`grab and drop`],
         isHungry,
         experiencePoints,
         level,
@@ -470,16 +533,36 @@ class Quetzacoatl extends Dinosaur
         this.abilityMap = 
         {
             2: 'gore',
-            6: 'dive bomb',
+            6: 'grab',
             11: 'kamikaze'
         };
     }
+
+    gore(target)
+    {
+        // critical damage
+    }
+
+    grab(target)
+    {
+        // target is unable to move minimal damage
+    }
+
+    kamikaze(target, life)
+    {
+        // one life point is left but damage is dealt by factor of amount of life lost
+    }
 }
 
-const test = new Velociraptor();
-const test2 = new Hadrosaur();
-test.name = `TEST`;
-test2.experiencePoints = 350050;
-test.attack(test2);
-test.attack(test2);
-test.attack(test2);
+
+// const test = new Velociraptor();
+// const test2 = new Hadrosaur();
+// test.name = `TEST`;
+// test2.experiencePoints = 500;
+module.exports = {
+    Dinosaur,
+    Velociraptor,
+    Hadrosaur,
+    Triceratops,
+    Quetzacoatl
+}
