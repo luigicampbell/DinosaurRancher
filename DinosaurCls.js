@@ -186,10 +186,18 @@ class Dinosaur
     }
     
     //implement on individual objects by overriding? or set ability definitions on each object
-    useAbility(ability)
+    useAbility(ability, target)
     {
         console.log(`${this.name} used ${ability}`);
         // case statement for abilities
+        switch(ability) 
+        {
+            case 'attack':
+                this.attack(target);
+                break;
+            default:
+                console.log('no ability chosen');
+        }
     }
 
     gainExp(target)

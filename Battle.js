@@ -26,11 +26,12 @@ class Battle
 
             console.log(`Choose an ability...`);
             // user chooses slot in array
-            choice = 1;
-            user.useAbility(ueserChoicesArr[choice]);
+            choice = 0;
+            // turn based logic here
+            user.useAbility(userChoicesArr[choice], target);
             if(user.life <= 0 || target.life <= 0)
             {
-                battleWon = true;
+                battleOver = true;
             }
         }
         console.log(`Battle Over`);
@@ -41,6 +42,6 @@ class Battle
 
 
 const battle = new Battle();
-const parent = new Dinosaur();
 const copy1 = new Velociraptor();
-copy1.hide('null');
+const copy2 = new Hadrosaur();
+battle.progressBattle(copy1,copy2);
